@@ -17,7 +17,9 @@ import 'package:softwarica_student_management_bloc/features/batch/domain/use_cas
 import 'package:softwarica_student_management_bloc/features/batch/domain/use_case/get_all_batch_usecase.dart';
 import 'package:softwarica_student_management_bloc/features/batch/presentation/view_model/batch_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/course/data/data_source/course_local_data_source.dart';
+import 'package:softwarica_student_management_bloc/features/course/data/data_source/course_remote_data_source.dart';
 import 'package:softwarica_student_management_bloc/features/course/data/repository/course_local_repository.dart';
+import 'package:softwarica_student_management_bloc/features/course/data/repository/course_remote_repository.dart';
 import 'package:softwarica_student_management_bloc/features/course/domain/use_case/create_course_usecase.dart';
 import 'package:softwarica_student_management_bloc/features/course/domain/use_case/delete_course_usecase.dart';
 import 'package:softwarica_student_management_bloc/features/course/domain/use_case/get_all_course_usecase.dart';
@@ -79,31 +81,45 @@ _initRegisterDependencies() {
 }
 
 _initCourseDependencies() {
-  // Data Source
+  // local Data Source
   getIt.registerFactory<CourseLocalDataSource>(
       () => CourseLocalDataSource(hiveService: getIt<HiveService>()));
 
-  // Repository
+  // Remote Data Dource
+  getIt.registerLazySingleton<CourseRemoteDataSource>(
+    () => CourseRemoteDataSource(
+      dio: getIt<Dio>(),
+    ),
+  );
+
+  // local Repository
   getIt.registerLazySingleton<CourseLocalRepository>(() =>
       CourseLocalRepository(
           courseLocalDataSource: getIt<CourseLocalDataSource>()));
 
+  // Remote Repository
+  getIt.registerLazySingleton(
+    () => CourseRemoteRepository(
+      remoteDataSource: getIt<CourseRemoteDataSource>(),
+    ),
+  );
+
   // Usecases
   getIt.registerLazySingleton<CreateCourseUsecase>(
     () => CreateCourseUsecase(
-      courseRepository: getIt<CourseLocalRepository>(),
+      courseRepository: getIt<CourseRemoteRepository>(),
     ),
   );
 
   getIt.registerLazySingleton<GetAllCourseUsecase>(
     () => GetAllCourseUsecase(
-      courseRepository: getIt<CourseLocalRepository>(),
+      courseRepository: getIt<CourseRemoteRepository>(),
     ),
   );
 
   getIt.registerLazySingleton<DeleteCourseUsecase>(
     () => DeleteCourseUsecase(
-      courseRepository: getIt<CourseLocalRepository>(),
+      courseRepository: getIt<CourseRemoteRepository>(),
     ),
   );
 
