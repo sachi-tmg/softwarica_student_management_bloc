@@ -30,22 +30,20 @@ class CourseApiModel extends Equatable {
     };
   }
 
-  factory CourseApiModel.fromEntity(CourseEntity entity) {
-    return CourseApiModel(
-      courseId: entity.courseId ?? '',
-      courseName: entity.courseName,
-    );
-  }
+  factory CourseApiModel.fromEntity(CourseEntity entity) => CourseApiModel(
+        courseId: entity.courseId ?? '',
+        courseName: entity.courseName,
+      );
 
   // To Entity
-  CourseEntity toEntity() {
-    return CourseEntity(
-      courseId: courseId,
-      courseName: courseName,
-    );
-  }
+  CourseEntity toEntity() => CourseEntity(
+        courseId: courseId,
+        courseName: courseName,
+      );
+
+  static List<CourseEntity> toEntityList(List<CourseApiModel> models) =>
+      models.map((model) => model.toEntity()).toList();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [courseId, courseName];
 }

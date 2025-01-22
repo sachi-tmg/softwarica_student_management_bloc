@@ -30,8 +30,16 @@ class CourseRemoteRepository implements ICourseRepository {
   }
 
   @override
-  Future<Either<Failure, List<CourseEntity>>> getCourses() {
-    // TODO: implement getCourses
-    throw UnimplementedError();
+  Future<Either<Failure, List<CourseEntity>>> getCourses() async {
+    try {
+      final courses = await remoteDataSource.getCourses();
+      return Right(courses);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
   }
 }

@@ -30,22 +30,21 @@ class BatchApiModel extends Equatable {
     };
   }
 
-  factory BatchApiModel.fromEntity(BatchEntity entity) {
-    return BatchApiModel(
-      batchId: entity.batchId ?? '',
-      batchName: entity.batchName,
-    );
-  }
+  factory BatchApiModel.fromEntity(BatchEntity entity) => BatchApiModel(
+        batchId: entity.batchId ?? '',
+        batchName: entity.batchName,
+      );
 
   // To Entity
-  BatchEntity toEntity() {
-    return BatchEntity(
-      batchId: batchId,
-      batchName: batchName,
-    );
-  }
+  BatchEntity toEntity() => BatchEntity(
+        batchId: batchId,
+        batchName: batchName,
+      );
+
+  static List<BatchEntity> toEntityList(List<BatchApiModel> models) =>
+      models.map((model) => model.toEntity()).toList();
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [batchId, batchName];
 }

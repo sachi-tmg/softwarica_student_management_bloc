@@ -13,5 +13,5 @@ class ApiEndpoints {
 
   // ==================== Course Routes ====================
   static const String createCourse = "course/createCourse";
-  static const String getAllCourse = "course/getAllCourses";
+  static const String getAllCourse = "course/getAllCourse";
 }

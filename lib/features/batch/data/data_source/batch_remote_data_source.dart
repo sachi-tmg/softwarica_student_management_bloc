@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:softwarica_student_management_bloc/app/constants/api_endpoints.dart';
 import 'package:softwarica_student_management_bloc/features/batch/data/data_source/batch_data_source.dart';
+import 'package:softwarica_student_management_bloc/features/batch/data/dto/get_all_batch_dto.dart';
 import 'package:softwarica_student_management_bloc/features/batch/data/model/batch_api_model.dart';
 import 'package:softwarica_student_management_bloc/features/batch/domain/entity/batch_entity.dart';
 
@@ -38,8 +39,19 @@ class BatchRemoteDataSource implements IBatchDataSource {
   }
 
   @override
-  Future<List<BatchEntity>> getBatches() {
-    // TODO: implement getBatches
-    throw UnimplementedError();
+  Future<List<BatchEntity>> getBatches() async {
+    try {
+      var response = await _dio.get(ApiEndpoints.getAllBatch);
+      if (response.statusCode == 200) {
+        GetAllBatchDTO batchAddDTO = GetAllBatchDTO.fromJson(response.data);
+        return BatchApiModel.toEntityList(batchAddDTO.data);
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }
