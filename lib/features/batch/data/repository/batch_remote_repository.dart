@@ -24,9 +24,17 @@ class BatchRemoteRepository implements IBatchRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteBatch(String id) {
-    // TODO: implement deleteBatch
-    throw UnimplementedError();
+  Future<Either<Failure, void>> deleteBatch(String id) async {
+    try {
+      await remoteDataSource.deleteBatch(id); // Call the data source method
+      return Right(null); // Return success
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(), // Wrap error in a failure object
+        ),
+      );
+    }
   }
 
   @override

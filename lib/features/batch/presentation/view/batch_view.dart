@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:softwarica_student_management_bloc/core/common/snackbar/my_snackbar.dart';
 import 'package:softwarica_student_management_bloc/features/batch/presentation/view_model/batch_bloc.dart';
 
 class BatchView extends StatelessWidget {
@@ -49,25 +48,20 @@ class BatchView extends StatelessWidget {
                   return Center(child: Text('No Batches Added Yet'));
                 } else if (state.isLoading) {
                   return CircularProgressIndicator();
-                } else if (state.error != null) {
-                  return showMySnackBar(
-                    context: context,
-                    message: state.error!,
-                    color: Colors.red,
-                  );
                 } else {
                   return Expanded(
                     child: ListView.builder(
                       itemCount: state.batches.length,
                       itemBuilder: (context, index) {
+                        final batch = state.batches[index];
                         return ListTile(
-                          title: Text(state.batches[index].batchName),
-                          subtitle: Text(state.batches[index].batchId!),
+                          title: Text(batch.batchName),
+                          subtitle: Text(batch.batchId!),
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
                               context.read<BatchBloc>().add(
-                                    DeleteBatch(state.batches[index].batchId!),
+                                    DeleteBatch(batchId: batch.batchId!),
                                   );
                             },
                           ),

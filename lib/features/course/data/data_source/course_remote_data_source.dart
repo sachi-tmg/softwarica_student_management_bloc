@@ -33,9 +33,22 @@ class CourseRemoteDataSource implements ICourseDataSource {
   }
 
   @override
-  Future<void> deleteCourse(String id) {
-    // TODO: implement deleteCourse
-    throw UnimplementedError();
+  Future<void> deleteCourse(String id) async {
+    try {
+      final response = await _dio.delete('${ApiEndpoints.deleteCourse}$id');
+      if (response.statusCode == 204) {
+        // Successful delete, return nothing
+        await getCourses();
+        return;
+      } else {
+        // Handle unexpected status codes
+        throw Exception('Failed to delete course: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.response?.data ?? e.message}');
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
+    }
   }
 
   @override

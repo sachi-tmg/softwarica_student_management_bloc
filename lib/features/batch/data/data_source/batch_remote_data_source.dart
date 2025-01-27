@@ -33,9 +33,21 @@ class BatchRemoteDataSource implements IBatchDataSource {
   }
 
   @override
-  Future<void> deleteBatch(String id) {
-    // TODO: implement deleteBatch
-    throw UnimplementedError();
+  Future<void> deleteBatch(String id) async {
+    try {
+      final response = await _dio.delete('${ApiEndpoints.deleteBatch}$id');
+      if (response.statusCode == 204) {
+        // Successful delete, return nothing
+        return;
+      } else {
+        // Handle unexpected status codes
+        throw Exception('Failed to delete batch: ${response.statusMessage}');
+      }
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.response?.data ?? e.message}');
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
+    }
   }
 
   @override
