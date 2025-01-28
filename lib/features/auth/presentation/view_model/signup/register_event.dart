@@ -9,6 +9,14 @@ sealed class RegisterEvent extends Equatable {
 
 class LoadCoursesAndBatches extends RegisterEvent {}
 
+class LoadImage extends RegisterEvent {
+  final File file;
+
+  const LoadImage({
+    required this.file,
+  });
+}
+
 class RegisterStudent extends RegisterEvent {
   final BuildContext context;
   final String fName;

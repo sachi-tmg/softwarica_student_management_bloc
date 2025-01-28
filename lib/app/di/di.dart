@@ -81,11 +81,18 @@ _initRegisterDependencies() {
     ),
   );
 
+  getIt.registerLazySingleton<UploadImageUsecase>(
+    () => UploadImageUsecase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
+
   getIt.registerFactory<RegisterBloc>(
     () => RegisterBloc(
       batchBloc: getIt<BatchBloc>(),
       courseBloc: getIt<CourseBloc>(),
       registerUseCase: getIt(),
+      uploadImageUsecase: getIt(),
     ),
   );
 }
