@@ -28,18 +28,15 @@ class AuthRemoteDataSource implements IAuthDataSource {
       );
 
       if (response.statusCode == 200) {
-        // Assuming the API returns a token upon successful login
         String token = response.data['token'];
         return token;
       } else {
         throw Exception("Login failed: ${response.statusMessage}");
       }
     } on DioException catch (e) {
-      // Handle Dio-specific errors
-      throw Exception("Dio error: ${e.response?.data['message'] ?? e.message}");
+      throw Exception(e);
     } catch (e) {
-      // Handle general errors
-      throw Exception("Login error: $e");
+      throw Exception(e);
     }
   }
 

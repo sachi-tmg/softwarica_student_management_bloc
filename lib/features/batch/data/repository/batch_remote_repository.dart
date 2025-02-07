@@ -24,9 +24,9 @@ class BatchRemoteRepository implements IBatchRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteBatch(String id) async {
+  Future<Either<Failure, void>> deleteBatch(String id, String? token) async {
     try {
-      remoteDataSource.deleteBatch(id); // Call the data source method
+      remoteDataSource.deleteBatch(id, token); // Call the data source method
       return Right(null); // Return success
     } catch (e) {
       return Left(

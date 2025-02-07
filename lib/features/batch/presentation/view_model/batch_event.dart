@@ -21,7 +21,7 @@ final class AddBatch extends BatchEvent {
 final class DeleteBatch extends BatchEvent {
   final String batchId;
 
-  const DeleteBatch({required this.batchId});
+  const DeleteBatch(this.batchId);
 
   @override
   List<Object> get props => [batchId];

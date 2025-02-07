@@ -26,6 +26,7 @@ class RegisterStudent extends RegisterEvent {
   final List<CourseEntity> courses;
   final String username;
   final String password;
+  final String? image;
 
   const RegisterStudent({
     required this.context,
@@ -36,5 +37,6 @@ class RegisterStudent extends RegisterEvent {
     required this.courses,
     required this.username,
     required this.password,
+    this.image,
   });
 }

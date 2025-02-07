@@ -50,7 +50,6 @@ class BatchBloc extends Bloc<BatchEvent, BatchState> {
           emit(state.copyWith(isLoading: false, error: failure.message)),
       (batches) {
         emit(state.copyWith(isLoading: false, error: null));
-
         add(LoadBatches());
       },
     );

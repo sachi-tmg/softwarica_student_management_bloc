@@ -9,6 +9,10 @@ class BatchEntity extends Equatable {
     required this.batchName,
   });
 
+  const BatchEntity.empty()
+      : batchId = '_empty.batchId',
+        batchName = '_empty.batchName';
+
   @override
   List<Object?> get props => [batchId, batchName];
 }

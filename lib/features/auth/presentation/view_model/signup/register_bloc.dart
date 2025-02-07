@@ -58,6 +58,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       courses: _courseBloc.state.courses,
       username: event.username,
       password: event.password,
+      image: state.imageName,
     ));
 
     result.fold(
