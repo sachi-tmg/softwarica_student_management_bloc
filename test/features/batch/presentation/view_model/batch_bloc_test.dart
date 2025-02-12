@@ -41,13 +41,45 @@ void main() {
     'emits [BatchState] with loaded batches when LoadBatche is added',
     build: () {
       when(() => getAllBatchUseCase.call())
-          .thenAnswer((_) async => Left(ApiFailure(message: 'Error')));
+          .thenAnswer((_) async => Right(lstBatches));
+      return batchBloc;
+    },
+    act: (bloc) => bloc.add(LoadBatches()),
+    expect: () => [
+      BatchState.initial().copyWith(isLoading: true),
+      BatchState.initial().copyWith(isLoading: false, batches: lstBatches)
+    ],
+    verify: (_) {
+      verify(() => getAllBatchUseCase.call()).called(1);
+    },
+  );
+  blocTest<BatchBloc, BatchState>(
+    'emits [BatchState] with loaded batches when LoadBatches is added with skip 1',
+    build: () {
+      when(() => getAllBatchUseCase.call())
+          .thenAnswer((_) async => Right(lstBatches));
       return batchBloc;
     },
     act: (bloc) => bloc.add(LoadBatches()),
     skip: 1,
     expect: () =>
         [BatchState.initial().copyWith(isLoading: false, batches: lstBatches)],
+    verify: (_) {
+      verify(() => getAllBatchUseCase.call()).called(1);
+    },
+  );
+  blocTest<BatchBloc, BatchState>(
+    'emits [BatchState] with error when LoadBatches fails',
+    build: () {
+      when(() => getAllBatchUseCase.call())
+          .thenAnswer((_) async => Left(ApiFailure(message: 'Error')));
+      return batchBloc;
+    },
+    act: (bloc) => bloc.add(LoadBatches()),
+    expect: () => [
+      BatchState.initial().copyWith(isLoading: true),
+      BatchState.initial().copyWith(isLoading: false, error: 'Error'),
+    ],
     verify: (_) {
       verify(() => getAllBatchUseCase.call()).called(1);
     },

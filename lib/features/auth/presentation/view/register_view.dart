@@ -23,16 +23,22 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   final _gap = const SizedBox(height: 8);
   final _key = GlobalKey<FormState>();
-  final _fnameController = TextEditingController(text: 'kiran');
-  final _lnameController = TextEditingController(text: 'rana');
-  final _phoneController = TextEditingController(text: '123456789');
-  final _usernameController = TextEditingController(text: 'kiran');
-  final _passwordController = TextEditingController(text: 'kiran123');
+  // final _fnameController = TextEditingController(text: 'kiran');
+  // final _lnameController = TextEditingController(text: 'rana');
+  // final _phoneController = TextEditingController(text: '123456789');
+  // final _usernameController = TextEditingController(text: 'kiran');
+  // final _passwordController = TextEditingController(text: 'kiran123');
+  final _fnameController = TextEditingController();
+  final _lnameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   BatchEntity? _dropDownValue;
   final List<CourseEntity> _lstCourseSelected = [];
 
-  checkCameraPermission() async {
+  // Check for camera permission
+  Future<void> checkCameraPermission() async {
     if (await Permission.camera.request().isRestricted ||
         await Permission.camera.request().isDenied) {
       await Permission.camera.request();
@@ -46,6 +52,7 @@ class _RegisterViewState extends State<RegisterView> {
       if (image != null) {
         setState(() {
           _img = File(image.path);
+          // Send image to server
           context.read<RegisterBloc>().add(
                 LoadImage(file: _img!),
               );
@@ -62,11 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: BlocBuilder<RegisterBloc, RegisterState>(
-          builder: (context, state) {
-            return Text('Register Student');
-          },
-        ),
+        title: Text('Register Student'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -98,7 +101,6 @@ class _RegisterViewState extends State<RegisterView> {
                                   checkCameraPermission();
                                   _browseImage(ImageSource.camera);
                                   Navigator.pop(context);
-                                  // Upload image it is not null
                                 },
                                 icon: const Icon(Icons.camera),
                                 label: const Text('Camera'),
